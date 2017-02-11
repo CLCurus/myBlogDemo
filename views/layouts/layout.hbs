@@ -1,0 +1,34 @@
+﻿
+<html>
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1"/>
+    <meta name="renderer" content="webkit"/>
+    <title></title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="/public/img/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+
+    <link rel="stylesheet" type="text/css" href="/public/vender/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="/public/css/icon.css"/>
+
+    <link href="/public/css/common.css" rel="stylesheet" type="text/css"/>
+    <link href="/public/css/link.css" rel="stylesheet" type="text/css"/>
+    <link href="/public/css/style.css" rel="stylesheet" type="text/css"/>
+    <script src="/public/vender/jquery/dist/jquery.js" type="text/javascript"></script>
+    <script src="/public/vender/bootstrap/dist/js/bootstrap.js"></script>
+
+</head>
+
+<body>
+    <!--给头部留坑-->
+    {{>header}}
+    <!--给主要内容留坑,res.render('index')中的内容-->
+    {{{body}}}
+    <!--给尾部留坑-->
+    {{>footer}}
+
+</body>
+</html>

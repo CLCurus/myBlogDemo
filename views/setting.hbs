@@ -1,0 +1,139 @@
+﻿
+<link href="/public/css/user-setting.css" rel="stylesheet" type="text/css"/>
+
+
+<div class="aw-container-wrap">
+  <div class="container">
+    <div class="row">
+      <div class="aw-content-wrap clearfix">
+        <div class="aw-user-setting">
+          <div class="tabbable">
+            <ul class="nav nav-tabs aw-nav-tabs active">
+              <li class="active"><a href="http://wenda.golaravel.com/setting/profile/">基本资料</a></li>
+
+              <h2><i class="icon icon-setting"></i> 用户设置</h2>
+            </ul>
+          </div>
+          <div class="tab-content clearfix">
+            <!-- 基本信息 -->
+            <div class="aw-mod">
+              <div class="mod-body">
+                <div class="aw-mod mod-base">
+                  <div class="mod-head">
+                    <h3>基本信息</h3>
+                  </div>
+                  <form id="setting_form" method="post"
+                        action="/doSetting">
+                    <div class="mod-body">
+                      <dl>
+                        <dt>ID:</dt>
+                        <dd>{{thisUser.id}}</dd>
+                      </dl>
+                      <dl>
+                        <dt>用户名:</dt>
+                        <dd>{{thisUser.username}}</dd>
+                      </dl>
+                      <input type="hidden" name="picpath" id="picPath" value="{{thisUser.pic}}">      
+                      <input type="hidden" name="userid" value="{{thisUser.id}}">      
+                 
+
+                      <!-- 上传头像 -->
+                      <div class="side-bar">
+                        <dl>
+                          <dt class="pull-left"><img class="aw-border-radius-5"
+                                                     src="{{thisUser.pic}}"
+                                                     alt="" id="avatar_src"/></dt>
+                          <dd class="pull-left">
+                            <h5>头像设置</h5>
+                            <p>支持 jpg、gif、png 等格式的图片</p>
+                            <a class="btn btn-mini btn-success" data-toggle="modal" data-target="#exampleModal"
+                               data-whatever="@mdo" id="avatar_uploader" >上传头像</a> <span
+                                  id="avatar_uploading_status" class="hide"><i class="aw-loading"></i> 文件上传中...</span>
+                          </dd>
+                        </dl>
+                      </div>
+                      <!-- end 上传头像 -->
+                    </div>
+                    <!-- end 基本信息 -->
+                  </form>
+                </div>
+                <div class="mod-footer clearfix">
+                  <a href="javascript:;" class="btn btn-large btn-success"
+                     onclick="$('#setting_form').submit();">保存</a>
+                     {{!--这里是把a标签的提交事件换成点击表单提交的方式--}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                  aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="exampleModalLabel">上传头像</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="avatar" class="control-label">请选择头像:</label>
+              <input type="file" class="form-control" id="pic_file">
+            </div>
+            <div class="form-group">
+              <img src="" width="500" id="pic" alt="">
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">完成</button>
+          <button type="button" class="btn btn-primary" id ="btn_upload">点击上传</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+      //设置图片预览
+      $('#pic_file').on('change',function(e){ //这是jquery里面的一个事件，检测input里面内容的变化
+          var file = e.target.files[0]; //获取文件对象
+          var urlObj = webkitURL || URL;  // 获取处理url的对象，保障兼容性
+          var imgUrl = urlObj.createObjectURL(file); //通过文件对象获取一个对应的url
+          //把获取到的url设置为下一个img标签的src
+          $('#pic').attr('src',imgUrl);
+      })
+      //点击按钮上传图片 需要是发送ajax请求实现异步上传文件不刷新页面
+      $('#btn_upload').on('click',function(){
+        //由于这个按钮不是form里面的submit提交按钮，所以要先使用h5里面专门负责发送表单数据的对象获得数据
+        var formData = new FormData();//获得表单数据对象
+        var fileObj = document.querySelector('#pic_file').files[0] //获取文件对象
+        //把文件以键值对的方式存储到formData对象里面
+        formData.append('pic',fileObj);
+
+        //获取都对象以后就发送请求上传对象，这里使用原生的ajax请求
+        var xhr = new XMLHttpRequest();
+        //打开连接
+        xhr.open('post','/uploadPic');
+        //设置监听和相应
+        xhr.onreadystatechange = function(){
+          if(xhr.readyState === 4 && xhr.status === 200){
+            //alert(xhr.responseText);
+            //将返回的url路径存储到表单中，提交的时候可以带过去，服务器接受以后做图片路径的更新
+              $('#picPath').val(xhr.responseText);//隐藏域
+              $('#avatar_src').attr('src',xhr.responseText);//设置图片显示
+
+              $('.btn-default').click();//点击以后封装了隐藏模态框
+              //这里就是点击上传按钮，然后同时执行完成按钮的事件
+          }
+        }
+        //发送数据
+        xhr.send(formData);
+      })
+
+  </script>
