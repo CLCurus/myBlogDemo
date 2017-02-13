@@ -19,6 +19,13 @@ Article.prototype.save = function(callback){
     ,[this.title,this.content,this.uid,this.answerCount],callback);
 }
 
+//获取数据库里面文章表的数量  把一些不需要拿到文章数据的方法设置到Article函数当中
+Article.getTotalCount=function(callback){
+    db.query(`select count(*) as total from articles`,[],callback);
+}
+Article.getArticlesByLimit = function(offset,viewCount,callback){
+    db.query(`select * from articles limit ?,?`,[offset,viewCount],callback);
+}
 
 module.exports = Article;
 

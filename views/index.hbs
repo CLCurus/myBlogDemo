@@ -7,54 +7,21 @@
                         <div class="mod-body">
                             <div class="aw-common-list" id="hds_container">
 
+                                
+                                {{#each articles}}
                                 <div class="aw-item active" data-topic-id="57,">
                                     <a class="aw-user-name hidden-xs" data-id="3654" href="/people/" rel="nofollow"><img src="" alt="" /></a>
                                     <div class="aw-question-content">
                                         <h4>
-                                                <a href="">我是在哪里</a>
-                                            </h4>
+                                            <a href="">{{this.title}}</a>
+                                        </h4>
                                         <p>作者:
                                             <a href="/people/" class="aw-user-name"></a>
-                                            <span class="text-color-999">• 1个回复 • 55秒前</span>
+                                            <span class="text-color-999">• {{this.answerCount}}个回复 • {{this.time}}秒前</span>
                                         </p>
                                     </div>
                                 </div>
-                                <div class="aw-item active" data-topic-id="57,">
-                                    <a class="aw-user-name hidden-xs" data-id="3654" href="/people/" rel="nofollow"><img src="" alt="" /></a>
-                                    <div class="aw-question-content">
-                                        <h4>
-                                                <a href="">我是在哪里</a>
-                                            </h4>
-                                        <p>作者:
-                                            <a href="/people/" class="aw-user-name"></a>
-                                            <span class="text-color-999">• 1个回复 • 55秒前</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="aw-item active" data-topic-id="57,">
-                                    <a class="aw-user-name hidden-xs" data-id="3654" href="/people/" rel="nofollow"><img src="" alt="" /></a>
-                                    <div class="aw-question-content">
-                                        <h4>
-                                                <a href="">我是在哪里</a>
-                                            </h4>
-                                        <p>作者:
-                                            <a href="/people/" class="aw-user-name"></a>
-                                            <span class="text-color-999">• 1个回复 • 55秒前</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="aw-item active" data-topic-id="57,">
-                                    <a class="aw-user-name hidden-xs" data-id="3654" href="/people/" rel="nofollow"><img src="" alt="" /></a>
-                                    <div class="aw-question-content">
-                                        <h4>
-                                                <a href="">我是在哪里</a>
-                                            </h4>
-                                        <p>作者:
-                                            <a href="/people/" class="aw-user-name"></a>
-                                            <span class="text-color-999">• 1个回复 • 55秒前</span>
-                                        </p>
-                                    </div>
-                                </div>
+                                {{/each}}
 
                             </div>
                         </div>
@@ -73,4 +40,5 @@
 <script type="text/javascript" src="/public/js/bootstrap-paginator.js"></script>
 
 <script>
+        //实现文章分页显示功能的就是利用上面引入的插件bootstrap-paginator
 </script>

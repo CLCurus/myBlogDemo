@@ -41,3 +41,27 @@ exports.saveArticle = (req,res,next)=>{
         return res.redirect('/');
     })
 }
+
+//处理文章显示分页
+exports.getPage = (req,res,next)=>{
+    //获取合计页，当前页，记录数
+    let totalPage = 0;
+    let viewCount = 2;
+    let currentPage = req.query.page || 1;
+    //查询数据库里面的文章记录总数
+    Article.getTotalCount((err,result)=>{
+        if(err) return next(err);
+        //拿到记录总数
+        let total = result[0].total;
+        //计算在该viewCount下的页面数量
+        totalPage = Math.ceil(total/viewCount); //向上取整
+        //获取查询数据库分页是的起始位置offser
+        let offset = (currentPage-1)*viewCount;
+        //查找数据库调用相应位置相应数量的数据
+        Article.getArticlesByLimit(offset,viewCount,(err,articles)=>{
+            if(err) return next(err);
+            // console.log(articles);
+            return res.render('index',{articles});
+        })
+    })
+}

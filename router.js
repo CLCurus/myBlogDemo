@@ -12,7 +12,8 @@ let articalControllers = require('./controllers/articalController');
        //由于这里嵌套的两个函数所传递的参数一样，所以可以合并起来
 // })
 
-router.get('/',userControllers.showIndex)//还可以链式编程
+// router.get('/',userControllers.showIndex)//还可以链式编程 
+router.get('/',articalControllers.getPage)//  到了要动态渲染文章的阶段就要重新设置了
 .get('/register',userControllers.showRegister) //显示注册页面
 .post('/doRegister',userControllers.doRegister) //注册处理
 .get('/active',userControllers.doActive) //激活处理
@@ -25,5 +26,6 @@ router.get('/',userControllers.showIndex)//还可以链式编程
 .post('/doSetting',userControllers.doSetting) //保存设置处理
 .get('/publishArticle',articalControllers.showPublish)  //显示文章发布页面
 .post('/saveArticle',articalControllers.saveArticle)  //提交并保存文章信息
+// .get('/getPage',articalControllers.getPage)  //处理文章显示分页问题
 
 module.exports = router;

@@ -91,15 +91,21 @@
     <script src="/public/vender/editor/editor.js"></script>
     <script src="/public/vender/editor/marked.js"></script>
     <script>
+
+        //这里是使用一个基于markdown的lepture插件实现在一个文本域标签中添加编辑文本的功能
+
         var editor = new Editor({
           element: document.getElementById('wmd-input')
           // toolbar: []  自定义工具栏
         })
         //为图标按钮添加点击事件，show出模态狂
         $('.icon-image').on('click',function () {
-            $('#myModal').modal();
+            $('#myModal').modal(); //这是bootstrop里面封装的显示页面的方法
         });
         editor.render();//渲染
+
+        //前面这一段为声明和渲染文本编辑器对象
+
         $('#btn_upload').on('click',function(){
             //ajax异步发送文件
             //获取文件对象
@@ -113,15 +119,18 @@
              $.ajax({
                 url:'/uploadPic',
                 type:'post',
+
+                //利用ajax发送文件的时候要加上这两个
                 contentType:false,//通知jq不加上默认的字符串键值对的头
                 processData:false,//不转换数据成键值对字符串
+
                 data:formData,
                 success:function(path){
                     //获取当前数据
                     var text = editor.codemirror.getValue();
                     text = text + '![](' + path + ')';//将内容追加到末尾
                     editor.codemirror.setValue(text);//设置内容
-                    $('.btn-default').click();
+                    $('.btn-default').click(); //完成相应效果后，自动触发完成按钮，隐藏模态框
                     
                 }
              });
