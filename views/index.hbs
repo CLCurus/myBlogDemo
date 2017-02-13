@@ -41,4 +41,15 @@
 
 <script>
         //实现文章分页显示功能的就是利用上面引入的插件bootstrap-paginator
+        var options = {
+            currentPage:{{pager.currentPager}},//当前页
+            totalPages:{{pager.totalPages}}, //合计页
+            //由于要实现动态的分页功能，所以这两个数据不能是死的，必须由后台传递
+
+            pageUrl:function(type,page){
+                return '/getPage?page='+page; //点击对应页面的时候就会发送对应的页面请求
+            }
+        }
+        //启动分页
+        $('#temp_pager').bootstrapPaginator(options);
 </script>

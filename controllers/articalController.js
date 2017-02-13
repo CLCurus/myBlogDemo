@@ -45,7 +45,7 @@ exports.saveArticle = (req,res,next)=>{
 //处理文章显示分页
 exports.getPage = (req,res,next)=>{
     //获取合计页，当前页，记录数
-    let totalPage = 0;
+    let totalPages = 0;
     let viewCount = 2;
     let currentPage = req.query.page || 1;
     //查询数据库里面的文章记录总数
@@ -54,14 +54,19 @@ exports.getPage = (req,res,next)=>{
         //拿到记录总数
         let total = result[0].total;
         //计算在该viewCount下的页面数量
-        totalPage = Math.ceil(total/viewCount); //向上取整
+        totalPages = Math.ceil(total/viewCount); //向上取整
         //获取查询数据库分页是的起始位置offser
         let offset = (currentPage-1)*viewCount;
         //查找数据库调用相应位置相应数量的数据
         Article.getArticlesByLimit(offset,viewCount,(err,articles)=>{
             if(err) return next(err);
+
+            //创建文章页面对象 用于传递数据给主页面分页的js代码
+            let Pager = require('../common/pager.js');
+            let pager = new Pager({currentPage,totalPages})
+
             // console.log(articles);
-            return res.render('index',{articles});
+            return res.render('index',{articles,pager});
         })
     })
 }

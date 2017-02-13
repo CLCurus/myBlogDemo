@@ -26,6 +26,6 @@ router.get('/',articalControllers.getPage)//  到了要动态渲染文章的阶�
 .post('/doSetting',userControllers.doSetting) //保存设置处理
 .get('/publishArticle',articalControllers.showPublish)  //显示文章发布页面
 .post('/saveArticle',articalControllers.saveArticle)  //提交并保存文章信息
-// .get('/getPage',articalControllers.getPage)  //处理文章显示分页问题
+.get('/getPage',articalControllers.getPage)  //处理文章显示分页问题
 
 module.exports = router;
