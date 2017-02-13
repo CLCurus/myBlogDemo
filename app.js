@@ -36,9 +36,9 @@ app.use(cookieParser()); //加入这个中间件以后，我们可以通过req.c
 app.use(router);
 
 //处理错误请求url的时候的跳转页面
-app.all('*',(req,res,next)=>{
-    return res.render('404');
-})
+// app.all('*',(req,res,next)=>{
+//     return res.render('404');
+// })
 
 //错误处理
 app.use((err,req,res,next)=>{

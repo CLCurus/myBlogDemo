@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 //引入控制器模块
 let userControllers = require('./controllers/userController');
+let articalControllers = require('./controllers/articalController');
 
 //设置主页面请求处理
 // router.get('/',(req,res,next)=>{
@@ -22,5 +23,7 @@ router.get('/',userControllers.showIndex)//还可以链式编程
 .get('/showSetting',userControllers.showSetting) // 显示设置用户界面
 .post('/uploadPic',userControllers.uploadPic) //上传图片处理
 .post('/doSetting',userControllers.doSetting) //保存设置处理
+.get('/publishArticle',articalControllers.showPublish)  //显示文章发布页面
+.post('/saveArticle',articalControllers.saveArticle)  //提交并保存文章信息
 
 module.exports = router;
