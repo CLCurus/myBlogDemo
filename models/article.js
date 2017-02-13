@@ -24,7 +24,23 @@ Article.getTotalCount=function(callback){
     db.query(`select count(*) as total from articles`,[],callback);
 }
 Article.getArticlesByLimit = function(offset,viewCount,callback){
-    db.query(`select * from articles limit ?,?`,[offset,viewCount],callback);
+    db.query(`
+SELECT
+    t1.id AS aid,
+    t1.title,
+    t1.content,
+    t1.time,
+    t1.uid,
+    t1.answerCount,
+    t2.username,
+    t2.email,
+    t2.pic
+FROM
+    articles t1
+LEFT JOIN users t2 ON t1.uid = t2.id 
+ORDER BY t1.time DESC 
+limit ?,? 
+    `,[offset,viewCount],callback);
 }
 
 module.exports = Article;

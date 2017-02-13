@@ -3,7 +3,7 @@ let Article = require('../models/article');
 //引入markdown转html的第三方包
 const md = require('markdown-it')();
 //引入操作事件显示的moment包
-// const moment = require('moment');
+const moment = require('moment');
 
 //声明一个用于替换字符串的方法
 function replaceAll(str,oldStr,newStr) {
@@ -44,9 +44,11 @@ exports.saveArticle = (req,res,next)=>{
 
 //处理文章显示分页
 exports.getPage = (req,res,next)=>{
+    //引入配置文件 获取查看的个数
+    let config = require('../config.js');
     //获取合计页，当前页，记录数
     let totalPages = 0;
-    let viewCount = 2;
+    let viewCount = config.viewCount;
     let currentPage = req.query.page || 1;
     //查询数据库里面的文章记录总数
     Article.getTotalCount((err,result)=>{
@@ -65,8 +67,16 @@ exports.getPage = (req,res,next)=>{
             let Pager = require('../common/pager.js');
             let pager = new Pager({currentPage,totalPages})
 
+            //借助第三方模块moment，修改时间数据
+            //遍历并修改每一个事件
+            moment.locale('zh-cn'); //设置本地语言
+            for (var i = articles.length - 1; i >= 0; i--) {
+                let article = articles[i];
+                article.showTime = moment(article.time).fromNow();//返回事件差
+            }
             // console.log(articles);
-            return res.render('index',{articles,pager});
+            // console.log(req.session.user);
+            return res.render('index',{articles,pager,user:req.session.user});
         })
     })
 }

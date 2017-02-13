@@ -1,12 +1,15 @@
 'use strict';
 const db = {};
 const mysql = require('mysql');
+//引入配置文件
+const config = require('../config.js');
+
 let pool = mysql.createPool({
-    connectionLimit : 10,
-    host            : '127.0.0.1',
-    user            : 'root',
-    password        : 'root',
-    database        : 'itcast',
+    connectionLimit : config.connectionLimit,
+    host            : config.host,
+    user            : config.user,
+    password        : config.password,
+    database        : config.database,
 });
 
 //封装自己的jquery
