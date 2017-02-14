@@ -89,5 +89,11 @@ Article.findArticleByAid = function(aid,callback){
         ,[aid],callback);
 }
 
+//更新文章评论数目
+Article.updateAnswerCount = function(aid,callback){
+    db.query(`update articles set answerCount=answerCount+1 where id=?`,
+    [aid],callback);
+}
+
 module.exports = Article;
 

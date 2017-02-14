@@ -1,5 +1,6 @@
 'use strict'
-let Article = require('../models/article');
+let Article = require('../models/article.js');
+let Comment = require('../models/comment.js');
 //引入markdown转html的第三方包
 const md = require('markdown-it')();
 //引入操作事件显示的moment包
@@ -128,7 +129,12 @@ exports.showArticle = (req,res,next)=>{
         if(articles.length === 0) {
             return res.render('404');
         }
+        //显示文章详情的时候还要获取评论数据，渲染到页面上
+        Comment.findCommentByAid(aid,(err,comments)=>{
+            if(err) next(err);
+            return res.render('article',{article:articles[0],user:req.session.user,comments});
+        })
         // console.log(articles);
-        return res.render('article',{article:articles[0],user:req.session.user});
+        
     })
 }

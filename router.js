@@ -3,8 +3,9 @@
 const express = require('express');
 const router = express.Router();
 //引入控制器模块
-let userControllers = require('./controllers/userController');
-let articalControllers = require('./controllers/articalController');
+let userControllers = require('./controllers/userController.js');
+let articalControllers = require('./controllers/articalController.js');
+let commentControllers = require('./controllers/commentController.js')
 
 //设置主页面请求处理
 // router.get('/',(req,res,next)=>{
@@ -30,5 +31,5 @@ router.get('/',articalControllers.getPage)//  到了要动态渲染文章的阶�
 .post('/searchArticle',articalControllers.searchArticle) //处理搜索框点击请求
 .get('/searchArticle',articalControllers.searchArticle) //处理搜索分页，页标点击请求处理
 .get('/showArticle/:aid',articalControllers.showArticle)   //显示文章详情页面
-
+.post('/sendComment',commentControllers.saveComment)   //保存文章评论处理
 module.exports = router;
