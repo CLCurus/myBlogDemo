@@ -28,7 +28,7 @@ exports.saveArticle = (req,res,next)=>{
     let uid = req.session.user.id;
     let answerCount = 0;
 
-    //将反斜杠替换为正斜杠
+    //将反斜杠替换为正斜杠  不该的话会导致渲染的时候双反斜杠被转义
     content = replaceAll(content,'\\','/');
     //使用markdown转换md到html
     content = md.render(content);
