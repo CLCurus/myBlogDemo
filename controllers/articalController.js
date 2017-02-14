@@ -104,7 +104,7 @@ exports.searchArticle = (req,res,next)=>{
             // console.log(articles);
             let Pager = require('../common/pager.js');
             let pager = new Pager({currentPage,totalPages,Url:'/searchArticle',keyWord:searchStr});
-
+    
             //使用moment第三方模块处理事间
             moment.locale('zh-cn');
             for(var i=0;i<articles.length;i++){
@@ -114,5 +114,21 @@ exports.searchArticle = (req,res,next)=>{
             
             return res.render('index',{articles,pager,user:req.session.user});
         })
+    })
+}
+
+//显示文章详情
+exports.showArticle = (req,res,next)=>{
+    //获取url上传递过来的文章id
+    let aid = req.params.aid;
+    // console.log(aid);
+    //通过获取到的aid查找数据库
+    Article.findArticleByAid(aid,(err,articles)=>{
+        if(err) next(err);
+        if(articles.length === 0) {
+            return res.render('404');
+        }
+        // console.log(articles);
+        return res.render('article',{article:articles[0],user:req.session.user});
     })
 }

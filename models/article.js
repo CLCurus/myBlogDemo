@@ -69,5 +69,25 @@ Article.searchArticleByLimit = function(searchStr,offset,viewCount,callback){
         order by t1.time desc limit ?,?`
         ,['%'+searchStr+'%',offset,viewCount],callback);
 }
+
+//显示文章详情的查询数据
+Article.findArticleByAid = function(aid,callback){
+    db.query(`
+    select 
+        t1.id AS aid,
+            t1.title,
+            t1.content,
+            t1.time,
+            t1.uid,
+            t1.answerCount,
+            t2.username,
+            t2.email,
+            t2.pic
+        from articles t1 
+        left join users t2 on t1.uid = t2.id
+        where t1.id=?`
+        ,[aid],callback);
+}
+
 module.exports = Article;
 
