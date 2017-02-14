@@ -65,7 +65,7 @@ exports.getPage = (req,res,next)=>{
 
             //创建文章页面对象 用于传递数据给主页面分页的js代码
             let Pager = require('../common/pager.js');
-            let pager = new Pager({currentPage,totalPages})
+            let pager = new Pager({currentPage,totalPages,Url:'/getPage'})
 
             //借助第三方模块moment，修改时间数据
             //遍历并修改每一个事件
@@ -76,6 +76,42 @@ exports.getPage = (req,res,next)=>{
             }
             // console.log(articles);
             // console.log(req.session.user);
+            return res.render('index',{articles,pager,user:req.session.user});
+        })
+    })
+}
+
+//模糊搜索
+exports.searchArticle = (req,res,next)=>{
+    //获取搜索框输入的关键字
+    let searchStr = req.body.q || req.query.keyWord; //加上keyWord用于点击搜索分页下标时的请求
+    // console.log(searchStr);
+    let config = require('../config.js');
+    let viewCount = config.viewCount;
+    let totalPages = 0;
+    let currentPage = req.query.page || 1;
+    //查找数据库 获得总数
+    Article.searchArticleCount(searchStr,(err,counts)=>{
+        if(err) next(err);
+        //这里counts传递回来的是一个数组 所以
+        let count = counts[0].total;
+        //计算合计页
+        totalPages = Math.ceil(count/viewCount);
+        let offset = (currentPage-1)*viewCount;
+        //拿到以上数据 查找数据库 需要多表查询
+        Article.searchArticleByLimit(searchStr,offset,viewCount,(err,articles)=>{
+            if(err) next(err);
+            // console.log(articles);
+            let Pager = require('../common/pager.js');
+            let pager = new Pager({currentPage,totalPages,Url:'/searchArticle',keyWord:searchStr});
+
+            //使用moment第三方模块处理事间
+            moment.locale('zh-cn');
+            for(var i=0;i<articles.length;i++){
+                let article = articles[i];
+                article.showTime = moment(article.time).fromNow();//返回事件差
+            }
+            
             return res.render('index',{articles,pager,user:req.session.user});
         })
     })
